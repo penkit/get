@@ -2,7 +2,7 @@
 set -e
 #
 # Usage:
-#   'wget -qO- https://get.penkit.io | sh'
+#   'wget -qO- http://get.penkit.io | sh'
 #
 
 do_install() {
