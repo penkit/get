@@ -11,7 +11,7 @@ do_install() {
   echo
   echo "We will try to install Penkit for you!"
 
-  if sleep 1 && which penkit &> /dev/null ; then
+  if sleep 1 && which penkit > /dev/null 2> /dev/null ; then
     echo
     echo "## Oh. You already have Penkit."
     echo
@@ -24,7 +24,7 @@ do_install() {
   echo
   echo "### Looking for Docker..."
   echo
-  if ! sleep 1 && which docker &> /dev/null ; then
+  if ! sleep 1 && which docker > /dev/null 2> /dev/null ; then
     echo "Error: Docker was not found in your PATH"
     echo "Please install Docker: https://docs.docker.com/engine/installation/"
     echo
@@ -39,14 +39,14 @@ do_install() {
   echo
   echo "### Looking for Ruby..."
   echo
-  if ! sleep 1 && which ruby &> /dev/null ; then
+  if ! sleep 1 && which ruby > /dev/null 2> /dev/null ; then
     echo "Warning: Ruby was not found in your path"
   else
     RUBY_VERSION=$(ruby --version)
     echo "Found: $RUBY_VERSION"
 
     # check for correct ruby version
-    if echo $RUBY_VERSION | awk '{ print $2 }' | grep -e "^1.8" &> /dev/null ; then
+    if echo $RUBY_VERSION | awk '{ print $2 }' | grep -e "^1.8" > /dev/null 2> /dev/null ; then
       echo "Warning: Penkit does not work with Ruby 1.8"
     
     else
@@ -54,7 +54,7 @@ do_install() {
       echo
       echo "### Looking for Rubygems..."
       echo
-      if ! sleep 1 && which gem &> /dev/null; then
+      if ! sleep 1 && which gem > /dev/null 2> /dev/null; then
         echo "Warning: Rubygems was not found in your PATH"
       else
         echo "Found: rubygems $(gem --version)"
@@ -83,7 +83,7 @@ do_install() {
   echo
   echo "## Verifing Penkit..."
   echo
-  if ! which penkit &> /dev/null ; then
+  if ! which penkit > /dev/null 2> /dev/null ; then
     echo "Error: We installed Penkit, but could not find it in your PATH"
     echo
     echo "Bye"
