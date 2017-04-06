@@ -10,12 +10,26 @@ do_install() {
   echo "# Welcome to Penkit! (penkit.io)"
   echo
   echo "How would you like to like to install penkit?"
-  echo "1) Ruby Gem"
-  echo "2) Docker Container"
+  echo "1) Docker Container"
+  echo "2) Ruby Gem"
 
   read input
 
   if [ $input = 1 ]; then
+    echo
+    echo "### Looking for Docker..."
+    echo
+    if ! sleep 1 && which docker > /dev/null 2> /dev/null ; then
+      echo "Error: Docker was not found in your PATH"
+      echo "Please install Docker: https://docs.docker.com/engine/installation/"
+      echo
+      echo "Bye"
+      exit 1
+    else
+      echo "Found: $(docker --version)"
+      INSTALL_MODE=docker
+    fi
+  elif [ $input = 2 ]; then
     echo
     echo "### Looking for Ruby..."
     echo
@@ -43,20 +57,6 @@ do_install() {
         fi
       fi
     fi
-  elif [ $input = 2 ]; then
-    echo
-    echo "### Looking for Docker..."
-    echo
-    if ! sleep 1 && which docker > /dev/null 2> /dev/null ; then
-      echo "Error: Docker was not found in your PATH"
-      echo "Please install Docker: https://docs.docker.com/engine/installation/"
-      echo
-      echo "Bye"
-      exit 1
-    else
-      echo "Found: $(docker --version)"
-      INSTALL_MODE=docker
-    fi
   else
     echo "Invalid input"
     exit 1
@@ -66,7 +66,7 @@ do_install() {
     echo
     echo "## Installing via Ruby Gem..."
     echo
-    sleep 1 && gem install --user-install penkit
+    sleep 1 && gem install penkit
   elif [ $INSTALL_MODE = "docker" ]; then
     echo
     echo "## Installing via Docker..."
