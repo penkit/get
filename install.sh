@@ -10,8 +10,8 @@ do_install() {
   echo "# Welcome to Penkit! (penkit.io)"
   echo
   echo "How would you like to install penkit?"
-  echo "1) Docker Container"
-  echo "2) Ruby Gem"
+  echo "\033[1m1) Docker Container\033[0m (Easiest)"
+  echo "\033[1m2) Ruby Gem\033[0m (Faster but requires Ruby)"
 
   read input
 
