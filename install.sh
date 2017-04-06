@@ -22,8 +22,6 @@ do_install() {
     if ! sleep 1 && which docker > /dev/null 2> /dev/null ; then
       echo "Error: Docker was not found in your PATH"
       echo "Please install Docker: https://docs.docker.com/engine/installation/"
-      echo
-      echo "Bye"
       exit 1
     else
       echo "Found: $(docker --version)"
@@ -84,8 +82,7 @@ do_install() {
   echo
   if ! which penkit > /dev/null 2> /dev/null ; then
     echo "Error: We installed Penkit, but could not find it in your PATH"
-    echo
-    echo "Bye"
+
     exit 1
   else
     echo "Found: Penkit $(penkit version)"
@@ -93,8 +90,7 @@ do_install() {
     echo "## Successfully installed Penkit!"
     echo
     echo "Type \"penkit help\" to get started."
-    echo
-    echo "Bye"
+
     exit 0
   fi
 }
