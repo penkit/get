@@ -9,65 +9,62 @@ do_install() {
   echo
   echo "# Welcome to Penkit! (penkit.io)"
   echo
-  echo "We will try to install Penkit for you!"
+  echo "How would you like to install penkit?"
+  echo "\033[1m1) Docker Container\033[0m (Easiest)"
+  echo "\033[1m2) Ruby Gem\033[0m (Faster but requires Ruby)"
 
-  if sleep 1 && which penkit > /dev/null 2> /dev/null ; then
+  read input
+
+  if [ $input = 1 ]; then
     echo
-    echo "## Oh. You already have Penkit."
+    echo "### Looking for Docker..."
     echo
-    echo "Bye"
-    exit 0
-  fi
-
-  echo
-  echo "## First, let's check some dependencies..."
-  echo
-  echo "### Looking for Docker..."
-  echo
-  if ! sleep 1 && which docker > /dev/null 2> /dev/null ; then
-    echo "Error: Docker was not found in your PATH"
-    echo "Please install Docker: https://docs.docker.com/engine/installation/"
-    echo
-    echo "Bye"
-    exit 1
-  else
-    echo "Found: $(docker --version)"
-  fi
-
-  INSTALL_MODE=docker
-
-  echo
-  echo "### Looking for Ruby..."
-  echo
-  if ! sleep 1 && which ruby > /dev/null 2> /dev/null ; then
-    echo "Warning: Ruby was not found in your path"
-  else
-    RUBY_VERSION=$(ruby --version)
-    echo "Found: $RUBY_VERSION"
-
-    # check for correct ruby version
-    if echo $RUBY_VERSION | awk '{ print $2 }' | grep -e "^1.8" > /dev/null 2> /dev/null ; then
-      echo "Warning: Penkit does not work with Ruby 1.8"
-    
+    if ! sleep 1 && which docker > /dev/null 2> /dev/null ; then
+      echo "Error: Docker was not found in your PATH"
+      echo "Please install Docker: https://docs.docker.com/engine/installation/"
+      exit 1
     else
+      echo "Found: $(docker --version)"
+      INSTALL_MODE=docker
+    fi
+  elif [ $input = 2 ]; then
+    echo
+    echo "### Looking for Ruby..."
+    echo
+    if ! sleep 1 && which ruby > /dev/null 2> /dev/null ; then
+      echo "Warning: Ruby was not found in your PATH"
+      exit 1
+    else
+      RUBY_VERSION=$(ruby --version)
+      echo "Found: $RUBY_VERSION"
 
-      echo
-      echo "### Looking for Rubygems..."
-      echo
-      if ! sleep 1 && which gem > /dev/null 2> /dev/null; then
-        echo "Warning: Rubygems was not found in your PATH"
+      # check for correct ruby version
+      if echo $RUBY_VERSION | awk '{ print $2 }' | grep -e "^1.8" > /dev/null 2> /dev/null ; then
+        echo "Warning: Penkit does not work with Ruby 1.8"
+        exit 1
       else
-        echo "Found: rubygems $(gem --version)"
-        INSTALL_MODE=gem
+        echo
+        echo "### Looking for Rubygems..."
+        echo
+        if ! sleep 1 && which gem > /dev/null 2> /dev/null; then
+          echo "Warning: Rubygems was not found in your PATH"
+          exit 1
+        else
+          echo "Found: rubygems $(gem --version)"
+          INSTALL_MODE=gem
+        fi
       fi
     fi
+  else
+    echo "Invalid input"
+    exit 1
   fi
 
   if [ $INSTALL_MODE = "gem" ]; then
     echo
     echo "## Installing via Ruby Gem..."
     echo
-    sleep 3 && gem install penkit
+    sleep 1 && gem install penkit
   elif [ $INSTALL_MODE = "docker" ]; then
     echo
     echo "## Installing via Docker..."
@@ -85,8 +82,7 @@ do_install() {
   echo
   if ! which penkit > /dev/null 2> /dev/null ; then
     echo "Error: We installed Penkit, but could not find it in your PATH"
-    echo
-    echo "Bye"
+
     exit 1
   else
     echo "Found: Penkit $(penkit version)"
@@ -94,8 +90,7 @@ do_install() {
     echo "## Successfully installed Penkit!"
     echo
     echo "Type \"penkit help\" to get started."
-    echo
-    echo "Bye"
+
     exit 0
   fi
 }
